@@ -2,4 +2,4 @@
 !.terraformrc
 *.tfstate
 *.tfstate.*
-terrafrom.tvars
+terraform.tvars
