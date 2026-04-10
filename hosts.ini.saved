@@ -1,0 +1,13 @@
+[bastion]
+111.88.248.77
+# подключение ssh user@111.88.248.77
+# адрес во внутренней сети 10.0.1.14
+
+[agents]
+10.0.1.8 # адрес agent-a
+# подключение ssh user@10.0.1.8 -J user@111.88.248.77
+10.0.2.26 # адрес agent-b
+# подключение ssh user@10.0.2.26 -J user@111.88.248.77
+
+[agents:vars]
+ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 -W %h:%p -q user@111.88.248.77"'

@@ -1,0 +1,5 @@
+.terraform*
+!.terraformrc
+*.tfstate
+*.tfstate.*
+terrafrom.tvars

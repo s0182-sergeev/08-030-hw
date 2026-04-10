@@ -1,0 +1,41 @@
+---
+- name: Установка и настройка PostgreSQL
+  hosts: bastion
+  become: yes
+  vars:
+    # Версия PostgreSQL по умолчанию
+    postgresql_version: "latest" 
+
+  tasks:
+    - name: Обновить кэш apt
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Установить PostgreSQL
+      apt:
+        name:
+          - postgresql
+          - python3-psycopg2
+        state: present
+
+    - name: Убедиться, что PostgreSQL запущен и включен в автозагрузку
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Создать новую базу данных
+      community.postgresql.postgresql_db:
+        name: zabbixdatabase
+        state: present
+        encoding: 'UTF-8'
+      become_user: postgres
+
+    - name: Создать пользователя базы данных
+      community.postgresql.postgresql_user:
+        name: user
+        password: 12345678
+        role_attr_flags: "CREATEDB,SUPERUSER"
+        db: zabbixdatabase
+      become_user: postgres
